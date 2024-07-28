@@ -1,0 +1,145 @@
+#pragma once
+
+////////////////////////////////////////////////////////////////////////////////
+//  Headers
+////////////////////////////////////////////////////////////////////////////////
+
+#include "PCH.h"
+#include "Common.h"
+
+////////////////////////////////////////////////////////////////////////////////
+/// PHYSICAL CAMERA FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////
+namespace PhysicalCamera
+{
+	////////////////////////////////////////////////////////////////////////////////
+	struct PhysicalCameraAttributes
+	{
+		// A single lens
+		struct LensComponent
+		{
+			float m_thickness;
+			float m_radius;
+			float m_refraction;
+			float m_abbeNumber;
+			float m_height;
+
+			std::vector<float> m_aspheric;
+
+			float m_coatingWavelength;
+			float m_coatingThickness;
+			float m_coatingRefraction;
+		};
+
+		std::string m_name;
+
+		float m_fNumber;
+		float m_focalDistance;
+		float m_fieldOfView;
+		glm::vec2 m_filmSize;
+
+		float m_heightMultiplier;
+		float m_coatingRefraction;
+		float m_coatingWavelength;
+
+		std::string m_apertureTexture;
+		std::string m_apertureFFT;
+		std::vector<LensComponent> m_lenses;
+
+		// Wavelengths to trace at
+		float m_minWavelength;
+		float m_maxWavelength;
+		int m_maxNumWavelengths;
+		std::vector<std::vector<float>> m_wavelengths;
+	};
+
+	////////////////////////////////////////////////////////////////////////////////
+	using CameraPresets = std::unordered_map<std::string, PhysicalCameraAttributes>;
+
+	////////////////////////////////////////////////////////////////////////////////
+	void initApertureTextures(Scene::Scene& scene);
+
+	////////////////////////////////////////////////////////////////////////////////
+	void initApertureShaders(Scene::Scene& scene);
+
+	////////////////////////////////////////////////////////////////////////////////
+	CameraPresets initCameraPatents(Scene::Scene& scene);
+
+	////////////////////////////////////////////////////////////////////////////////
+	std::array<bool, 3> generateGui(Scene::Scene& scene, Scene::Object* guiSettings, Scene::Object* owner, 
+		CameraPresets& presets, PhysicalCameraAttributes& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	glm::mat2 translationMatrix(const float dist);
+
+	////////////////////////////////////////////////////////////////////////////////
+	glm::mat2 reflectionMatrix(const float radius);
+
+	////////////////////////////////////////////////////////////////////////////////
+	glm::mat2 refractionMatrix(const float n1, const float n2, const float radius);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float cauchyDispersion(const float lambda, const float nd, const float v);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float cauchyDispersion(PhysicalCameraAttributes const& camera, const size_t elementId, const float lambda);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float cauchyDispersion(PhysicalCameraAttributes const& camera, const size_t numChannels, const size_t elementId, const size_t channelID);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float fresnelWithAntiReflectionCoating(const float lambda, const float coatingLambda, const float theta0, const float n0, const float n1, const float n2);
+
+	////////////////////////////////////////////////////////////////////////////////
+	int getApertureIndex(PhysicalCameraAttributes const& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	std::pair<glm::mat2, glm::mat2> getSystemMatrices(PhysicalCameraAttributes const& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Return the computed effective aperture height
+	float getEffectiveApertureHeight(const float efl = -1.0f, const float fNumber = -1.0f);
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Return the computed effective aperture height
+	float getCameraEffectiveApertureHeight(PhysicalCameraAttributes const& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Return the computed effective aperture height
+	float getPhysicalApertureHeight(PhysicalCameraAttributes const& camera, const float efl = -1.0f, const float fNumber = -1.0f, const float lambda = 575.0f);
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Return the computed effective aperture height
+	float getCameraPhysicalApertureHeight(PhysicalCameraAttributes const& camera, const float lambda = 575.0f);
+
+	////////////////////////////////////////////////////////////////////////////////
+	int getApertureId(PhysicalCameraAttributes const& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Calculate the entrance plane's distance from the sensor plane along the optical axis
+	float getSensorDistance(PhysicalCameraAttributes const& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float getCoatingThickness(const float coatingLambda, const float n0, const float n1, const float n2);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float getCoatingThickness(PhysicalCameraAttributes const& camera, const size_t lensID, const float lambda);
+
+	////////////////////////////////////////////////////////////////////////////////
+	float getCoatingThickness(PhysicalCameraAttributes const& camera, const size_t numChannels, const size_t lensID, const size_t channelID);
+
+	////////////////////////////////////////////////////////////////////////////////
+	typedef std::vector<int> GhostIndices;
+
+	////////////////////////////////////////////////////////////////////////////////
+	std::vector<GhostIndices> enumerateGhosts(PhysicalCameraAttributes const& camera, const int reflections = 2, const bool apertureCrossing = false);
+
+	////////////////////////////////////////////////////////////////////////////////
+	size_t getNumGhosts(PhysicalCameraAttributes const& camera, const int reflections = 2, const bool apertureCrossing = false);
+
+	////////////////////////////////////////////////////////////////////////////////
+	void computeWavelengths(PhysicalCameraAttributes& camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	void propagateCoatingInformation(PhysicalCameraAttributes& camera);
+}
