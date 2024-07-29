@@ -123,7 +123,7 @@ If you find the framework or our algorithms useful, we kindly ask you to cite th
 ```
 @unpublished{bodonyi2024real,
   title={Real-time ray transfer for lens flare rendering using sparse polynomials},
-  author={Bodonyi, Andrea and and Csoba, István and Kunkli, Roland},
+  author={Bodonyi, Andrea and Csoba, István and Kunkli, Roland},
   year={2024},
   note={Manuscript under review}
 }
