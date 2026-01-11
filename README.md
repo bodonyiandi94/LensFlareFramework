@@ -1,6 +1,6 @@
 # Reference Implementation for *Real-time ray transfer for lens flare rendering using sparse polynomials* and *Efficient tile-based rendering of lens flare ghosts*
 
-This repository contains our reference implementation for the paper *Efficient tile-based rendering of lens flare ghosts* and our manuscript *Real-time ray transfer for lens flare rendering using sparse polynomials* (currently under review).
+This repository contains our reference implementation for the paper *Efficient tile-based rendering of lens flare ghosts* and our manuscript *Real-time ray transfer for lens flare rendering using sparse polynomials*.
 
 ## Dependencies
 
