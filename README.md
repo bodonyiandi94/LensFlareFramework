@@ -97,3 +97,36 @@ The important shaders are in the [Assets/Shaders/OpenGL/LensFlare/RayTraceLensFl
 - [PrecomputeGhosts](Assets/Shaders/OpenGL/LensFlare/RayTraceLensFlare/PrecomputeGhosts/): Implements ray tracing using analytical formulas and stores the data in GPU buffers. Used for ghost bounding, fitting data generation, etc.
 - [RenderGhosts](Assets/Shaders/OpenGL/LensFlare/RayTraceLensFlare/RenderGhosts/): Implements the original approach of Hullin et al., whereby a coarse ray grid is traced per ghost, which is then triangulated and rendered on the fly.
 - [RenderGhostsTiled](Assets/Shaders/OpenGL/LensFlare/RayTraceLensFlare/RenderGhostsTiled/): Implements our proposed, tile-based ghost rasterization approach, where the triangles of the coarse ray grid are collected into tiles and rendered in one step.
+
+## Related publications & citations
+
+If you find the framework or our algorithms useful, we kindly ask you to cite the relevant papers as follows:
+- [Efficient tile-based rendering of lens flare ghosts](https://doi.org/10.1016/j.cag.2023.07.019)
+
+```
+@article{bodonyi2023tiled,
+  author  = {Bodonyi, Andrea and Kunkli, Roland},
+  title   = {{Efficient tile-based rendering of lens flare ghosts}},
+  year    = {2023},
+  month   = {10},
+  journal = {Computers & Graphics},
+  volume  = {115},
+  pages   = {472--483},
+  doi     = {https://doi.org/10.1016/j.cag.2023.07.019}
+}
+```
+
+- [Real-time ray transfer for lens flare rendering using sparse polynomials](https://doi.org/10.1007/s00371-024-03625-7)
+
+```
+@article{bodonyi2025polynomial,
+  author  = {Bodonyi, Andrea and Csoba, István and Kunkli, Roland},
+  title   = {{Real-time ray transfer for lens flare rendering using sparse polynomials}},
+  year    = {2025},
+  month   = {10},
+  journal = {The Visual Computer},
+  volume  = {41},
+  pages   = {3645--3662},
+  doi     = {https://doi.org/10.1007/s00371-024-03625-7}
+}
+```
